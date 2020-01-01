@@ -11,10 +11,10 @@ type test_struct struct {
 	Url string `json:"url"`
 }
 
-// GetArticle is an httpHandler for route GET /people/{url}
+// GetArticle is an httpHandler for route POST /people/{url}
 func GetArticle(w http.ResponseWriter, r *http.Request) {
 
-	// swagger:route GET /article article content
+	// swagger:route POST /article article content
 	//
 	// Get article details against URL
 	//
