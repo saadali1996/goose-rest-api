@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  blog:
+    image: goose-rest-v1:latest
+    labels:
+      - traefik.backend=goose-backend
+      - traefik.frontend.rule=Host:traefik.contentstudio.io/goose
+      - traefik.docker.network=traefik-public
+      - traefik.port=80
+    networks:
+      - traefik-public
