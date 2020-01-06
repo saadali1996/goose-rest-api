@@ -55,3 +55,33 @@ func GetArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+// GetArticle is an httpHandler for route POST /people/{url}
+func GetHealth(w http.ResponseWriter, r *http.Request) {
+
+	// swagger:route GET /health health check of endpoint
+	//
+	// Get article details against URL
+	//
+	// This will extract details of an article e.g top_image,
+	//
+	//     Consumes:
+	//     - application/json
+	//
+	//     Produces:
+	//     - application/json
+	//
+	//     Schemes: http, https
+	//
+	//     Params:
+	//       url: article_url
+	//
+	//     Responses:
+	//       200: articleResponse
+	//       404: jsonError
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	w.WriteHeader(http.StatusOK)
+
+}

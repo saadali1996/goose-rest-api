@@ -1,12 +1,39 @@
-version: "3"
+version: '3'
 
 services:
-  blog:
-    image: goose-rest-v1:latest
-    labels:
-      - traefik.backend=goose-backend
-      - traefik.frontend.rule=Host:traefik.contentstudio.io/goose
-      - traefik.docker.network=traefik-public
-      - traefik.port=80
+
+  traefik:
+    image: traefik:v1.7.16
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
     networks:
-      - traefik-public
+      - traefik_public
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+    labels:
+      - "traefik.frontend.rule=Host:traefik.contentstudio.io"
+      - "traefik.port=8080"
+    container_name: traefik
+    restart: always
+  goose-service:
+    image: goose-rest-v1:latest
+    expose:
+      - 8000
+    networks:
+      - traefik_public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_public"
+      - "traefik.goose-service.backend=goose-service"
+      - "traefik.goose-service.frontend.rule=Host:traefik.contentstudio.io;PathPrefixStrip: /goose/"
+      - "traefik.frontend.goose-service.forward.address=http://localhost:8000"
+      - "traefik.port=8000"
+
+networks:
+  traefik_public:
+    external: true
