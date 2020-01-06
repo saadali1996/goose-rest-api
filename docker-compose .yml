@@ -29,6 +29,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_public"
+      - "traefik.goose-service.healthcheck.path=/health"
+      - "traefik.goose-service.healthcheck.interval=10s"
       - "traefik.goose-service.backend=goose-service"
       - "traefik.goose-service.frontend.rule=Host:traefik.contentstudio.io;PathPrefixStrip: /goose/"
       - "traefik.frontend.goose-service.forward.address=http://localhost:8000"
